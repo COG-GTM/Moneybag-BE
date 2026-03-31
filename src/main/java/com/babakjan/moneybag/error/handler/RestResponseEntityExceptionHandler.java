@@ -52,4 +52,12 @@ public class RestResponseEntityExceptionHandler {
         errors.put("illegal argument", exception.getMessage());
         return new ErrorMessage(HttpStatus.BAD_REQUEST, errors);
     }
+
+    @ExceptionHandler({ContributionValidationException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErrorMessage contributionValidationException(Exception exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("contribution", exception.getMessage());
+        return new ErrorMessage(HttpStatus.UNPROCESSABLE_ENTITY, errors);
+    }
 }
