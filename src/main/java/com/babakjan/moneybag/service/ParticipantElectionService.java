@@ -136,9 +136,9 @@ public class ParticipantElectionService {
                     "Participant is not eligible for catch-up contributions (must be age 50 or older)");
         }
 
-        // Validate: affected participant cannot use PRE_TAX catch-up
+        // Validate: affected participant must designate catch-up as Roth
         if (isAffected && request.getCatchUpAmount() != null && request.getCatchUpAmount() > 0
-                && "PRE_TAX".equals(request.getCatchUpDesignation())) {
+                && !"ROTH".equals(request.getCatchUpDesignation())) {
             throw new ElectionValidationException("PRETAX_CATCHUP_NOT_ALLOWED",
                     "Affected participants must designate catch-up contributions as Roth per SECURE 2.0 Section 603");
         }

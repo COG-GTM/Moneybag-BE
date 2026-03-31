@@ -51,6 +51,10 @@ public class ContributionSummaryService {
     }
 
     public void updateSummary(Long participantId, int planYear, Double amount, String type, String designation) {
+        if (amount == null) {
+            throw new IllegalArgumentException("Contribution amount must not be null");
+        }
+
         ContributionSummary summary = contributionSummaryRepository
                 .findByParticipantIdAndPlanYear(participantId, planYear)
                 .orElse(ContributionSummary.builder()
