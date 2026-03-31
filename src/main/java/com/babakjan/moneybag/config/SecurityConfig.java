@@ -41,7 +41,9 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/swagger-ui/**",
             "/swagger-ui/**",
-            "/v3/api-docs/**"
+            "/v3/api-docs/**",
+            // contribution endpoints (SECURE 2.0 Section 603)
+            "/contributions/**"
     };
 
     //paths, which require role ADMIN
