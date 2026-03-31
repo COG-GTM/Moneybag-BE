@@ -10,6 +10,7 @@ import com.babakjan.moneybag.repository.PayrollBatchSummaryRepository;
 import com.babakjan.moneybag.repository.PayrollRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +35,7 @@ public class PayrollFileIngestionService {
      * @return batch response with processing results
      * @throws PlanNotFoundException if plan configuration not found
      */
+    @Transactional
     public PayrollBatchResponse processPayrollFile(PayrollFileUploadRequest request) throws PlanNotFoundException {
         String batchId = UUID.randomUUID().toString();
         PlanConfiguration planConfig = planConfigurationService.getByPlanId(request.getPlanId());
@@ -216,6 +218,7 @@ public class PayrollFileIngestionService {
      * @return batch response with updated status
      * @throws PayrollProcessingException if record not found or still invalid
      */
+    @Transactional
     public PayrollBatchResponse resubmitFlaggedRecord(PayrollResubmissionRequest request)
             throws PayrollProcessingException {
         Optional<PayrollRecord> optional = payrollRecordRepository
