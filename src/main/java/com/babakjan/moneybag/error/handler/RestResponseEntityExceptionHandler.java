@@ -52,4 +52,13 @@ public class RestResponseEntityExceptionHandler {
         errors.put("illegal argument", exception.getMessage());
         return new ErrorMessage(HttpStatus.BAD_REQUEST, errors);
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ContributionRoutingException.class)
+    public ErrorMessage contributionRoutingException(ContributionRoutingException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("errorCode", exception.getErrorCode());
+        errors.put("errorMessage", exception.getMessage());
+        return new ErrorMessage(HttpStatus.BAD_REQUEST, errors);
+    }
 }
