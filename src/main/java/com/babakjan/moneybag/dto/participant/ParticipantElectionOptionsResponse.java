@@ -13,9 +13,9 @@ public class ParticipantElectionOptionsResponse {
     private Long participantId;
     private int planYear;
     private int age;
-    private boolean isAffectedBySection603;
-    private boolean isCatchUpEligible;
-    private boolean isSuperCatchUpEligible;
+    private boolean affectedBySection603;
+    private boolean catchUpEligible;
+    private boolean superCatchUpEligible;
     private Double catchUpLimit;
     private Double regularContributionLimit;
     private boolean preTaxCatchUpAvailable;

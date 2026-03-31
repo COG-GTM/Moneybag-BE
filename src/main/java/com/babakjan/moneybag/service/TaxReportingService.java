@@ -49,19 +49,23 @@ public class TaxReportingService {
         // 1099-R distribution code for Roth catch-up
         String distributionCode1099R = totalRothCatchUp > 0 ? "B" : null;
 
-        // Save/update tax report entry
-        TaxReportEntry entry = TaxReportEntry.builder()
-                .participantId(participantId)
-                .planYear(planYear)
-                .planType(planType)
-                .regularRothAmount(safeDouble(summary.getTotalRegularRoth()))
-                .regularPreTaxAmount(safeDouble(summary.getTotalRegularPreTax()))
-                .catchUpRothAmount(safeDouble(summary.getTotalCatchUpRoth()))
-                .catchUpPreTaxAmount(safeDouble(summary.getTotalCatchUpPreTax()))
-                .superCatchUpRothAmount(safeDouble(summary.getTotalSuperCatchUpRoth()))
-                .w2Box12Code(w2Box12Code)
-                .w2Box12Amount(w2Box12Amount)
-                .build();
+        // Upsert tax report entry: update existing or create new
+        TaxReportEntry entry;
+        if (!entries.isEmpty()) {
+            entry = entries.get(0);
+        } else {
+            entry = new TaxReportEntry();
+            entry.setParticipantId(participantId);
+            entry.setPlanYear(planYear);
+        }
+        entry.setPlanType(planType);
+        entry.setRegularRothAmount(safeDouble(summary.getTotalRegularRoth()));
+        entry.setRegularPreTaxAmount(safeDouble(summary.getTotalRegularPreTax()));
+        entry.setCatchUpRothAmount(safeDouble(summary.getTotalCatchUpRoth()));
+        entry.setCatchUpPreTaxAmount(safeDouble(summary.getTotalCatchUpPreTax()));
+        entry.setSuperCatchUpRothAmount(safeDouble(summary.getTotalSuperCatchUpRoth()));
+        entry.setW2Box12Code(w2Box12Code);
+        entry.setW2Box12Amount(w2Box12Amount);
         taxReportEntryRepository.save(entry);
 
         return TaxReportResponse.builder()
