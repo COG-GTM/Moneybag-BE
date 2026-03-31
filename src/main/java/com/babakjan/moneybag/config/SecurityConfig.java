@@ -41,7 +41,10 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/swagger-ui/**",
             "/swagger-ui/**",
-            "/v3/api-docs/**"
+            "/v3/api-docs/**",
+            // payroll and plan configuration endpoints
+            "/payroll/**",
+            "/plans/**"
     };
 
     //paths, which require role ADMIN
