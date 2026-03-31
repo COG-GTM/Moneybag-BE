@@ -9,6 +9,7 @@ import com.babakjan.moneybag.repository.PlanConfigurationAuditLogRepository;
 import com.babakjan.moneybag.repository.PlanConfigurationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -60,6 +61,7 @@ public class PlanConfigurationService {
      * @return updated plan configuration
      * @throws PlanNotFoundException if plan not found
      */
+    @Transactional
     public PlanConfiguration updatePlanConfiguration(String planId, UpdatePlanConfigRequest request)
             throws PlanNotFoundException {
         PlanConfiguration config = getByPlanId(planId);
