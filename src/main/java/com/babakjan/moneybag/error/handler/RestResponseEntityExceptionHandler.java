@@ -52,4 +52,21 @@ public class RestResponseEntityExceptionHandler {
         errors.put("illegal argument", exception.getMessage());
         return new ErrorMessage(HttpStatus.BAD_REQUEST, errors);
     }
+
+    @ExceptionHandler({ElectionValidationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage electionValidationException(ElectionValidationException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("errorCode", exception.getErrorCode());
+        errors.put("errorMessage", exception.getErrorMessage());
+        return new ErrorMessage(HttpStatus.BAD_REQUEST, errors);
+    }
+
+    @ExceptionHandler({TaxReportingException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage taxReportingException(TaxReportingException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("taxReporting", exception.getMessage());
+        return new ErrorMessage(HttpStatus.BAD_REQUEST, errors);
+    }
 }
