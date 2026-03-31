@@ -185,6 +185,15 @@ public class PayrollFileIngestionService {
                                 + " above special catch-up limit requires Roth, but plan has no Roth option."));
             }
 
+            // Check if Roth effective date has been reached
+            if (planConfig.getRothEffectiveDate() != null && now.before(planConfig.getRothEffectiveDate())) {
+                record.setStatus("REJECTED");
+                record.setErrorCode(PLAN_NO_ROTH_OPTION);
+                record.setErrorMessage("Roth catch-up option not yet effective for this plan.");
+                return new ProcessingResult(true, buildFlaggedDetail(entry, PLAN_NO_ROTH_OPTION,
+                        "Roth catch-up option not yet effective for this plan."));
+            }
+
             record.setStatus("FLAGGED");
             record.setErrorCode(ROTH_CATCHUP_REQUIRED);
             record.setErrorMessage("$" + String.format("%.2f", excessAmount)
