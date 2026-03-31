@@ -366,3 +366,6 @@ values (
             where a.name = "Current" and a.user_id = (select u.id from users u where u.email = "honza@gmail.com")),
            (select c.id from categories c where c.name = "Others")
        );
+-- Seed data: ContributionLimit for tax year 2026
+insert into contribution_limits (tax_year, regular_limit, catch_up_limit, super_catch_up_limit, fica_wages_threshold)
+values (2026, 23500, 7500, 11250, 145000);
