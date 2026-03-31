@@ -245,4 +245,38 @@ class ContributionValidationServiceTest {
         assertDoesNotThrow(() -> validationService.validateContribution(contribution));
         assertThat(validationService.getApplicableCatchUpLimit(participant, 2026)).isEqualTo(7500.0);
     }
+
+    // Test 14: Age 52, SUPER_CATCH_UP — Rejected (not age 60-63)
+    @Test
+    void test14_superCatchUp_age52_rejected_notEligible() {
+        Participant participant = buildParticipant(52, 130000.0);
+        Contribution contribution = buildContribution(participant, ContributionType.SUPER_CATCH_UP, TaxTreatment.ROTH);
+
+        assertThatThrownBy(() -> validationService.validateContribution(contribution))
+                .isInstanceOf(ContributionValidationException.class)
+                .hasMessageContaining("age 60-63");
+    }
+
+    // Test 15: Age 65, SUPER_CATCH_UP — Rejected (not age 60-63)
+    @Test
+    void test15_superCatchUp_age65_rejected_notEligible() {
+        Participant participant = buildParticipant(65, 130000.0);
+        Contribution contribution = buildContribution(participant, ContributionType.SUPER_CATCH_UP, TaxTreatment.ROTH);
+
+        assertThatThrownBy(() -> validationService.validateContribution(contribution))
+                .isInstanceOf(ContributionValidationException.class)
+                .hasMessageContaining("age 60-63");
+    }
+
+    // Test 16: Age 61, SUPER_CATCH_UP — Accepted (within 60-63 range)
+    @Test
+    void test16_superCatchUp_age61_accepted() {
+        given(contributionLimitRepository.findByTaxYear(2026))
+                .willReturn(Optional.of(limit2026));
+
+        Participant participant = buildParticipant(61, 130000.0);
+        Contribution contribution = buildContribution(participant, ContributionType.SUPER_CATCH_UP, TaxTreatment.ROTH);
+
+        assertDoesNotThrow(() -> validationService.validateContribution(contribution));
+    }
 }

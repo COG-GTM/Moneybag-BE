@@ -34,6 +34,11 @@ public class ContributionValidationService {
                     "Participant is not eligible for catch-up contributions. Must be age 50 or older by December 31 of the tax year.");
         }
 
+        if (contribution.getContributionType() == ContributionType.SUPER_CATCH_UP && !isSuperCatchUpEligible(participant, taxYear)) {
+            throw new ContributionValidationException(
+                    "Participant is not eligible for super catch-up contributions. Must be age 60-63 by December 31 of the tax year.");
+        }
+
         enforceTaxTreatment(contribution);
     }
 
