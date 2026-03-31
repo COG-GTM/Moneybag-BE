@@ -64,7 +64,7 @@ public class ContributionRoutingEngine {
 
         // Check Roth requirement for high earners
         if (eligibility.getRequiredDesignation() == ContributionDesignation.ROTH
-                && request.getDesignation() == ContributionDesignation.PRE_TAX) {
+                && request.getDesignation() != ContributionDesignation.ROTH) {
             return ContributionResponse.builder()
                     .accepted(false)
                     .errorCode("ROTH_CATCHUP_REQUIRED")
