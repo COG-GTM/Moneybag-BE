@@ -13,5 +13,7 @@ public interface PayrollRecordRepository extends JpaRepository<PayrollRecord, Lo
 
     List<PayrollRecord> findByBatchIdAndStatus(String batchId, String status);
 
+    List<PayrollRecord> findByBatchIdAndStatusIn(String batchId, List<String> statuses);
+
     Optional<PayrollRecord> findByBatchIdAndParticipantId(String batchId, Long participantId);
 }

@@ -21,6 +21,7 @@ public class PayrollFileIngestionService {
     private static final String ROTH_CATCHUP_REQUIRED = "ROTH_CATCHUP_REQUIRED";
     private static final String PLAN_NO_ROTH_OPTION = "PLAN_NO_ROTH_OPTION";
     private static final double GOVERNMENTAL_457B_SPECIAL_CATCHUP_LIMIT = 15000.0;
+    private static final List<String> NON_PROCESSED_STATUSES = List.of("FLAGGED", "REJECTED", "PENDING_RESUBMISSION");
 
     private final PlanConfigurationService planConfigurationService;
     private final ParticipantEligibilityStub participantEligibilityStub;
@@ -292,7 +293,7 @@ public class PayrollFileIngestionService {
 
         PayrollBatchSummary summary = optional.get();
         List<PayrollRecord> flaggedRecords = payrollRecordRepository
-                .findByBatchIdAndStatus(batchId, "FLAGGED");
+                .findByBatchIdAndStatusIn(batchId, NON_PROCESSED_STATUSES);
 
         List<FlaggedRecordDetail> flaggedDetails = flaggedRecords.stream()
                 .map(r -> FlaggedRecordDetail.builder()
@@ -325,7 +326,7 @@ public class PayrollFileIngestionService {
      */
     public List<FlaggedRecordDetail> getFlaggedRecords(String batchId) {
         List<PayrollRecord> flaggedRecords = payrollRecordRepository
-                .findByBatchIdAndStatus(batchId, "FLAGGED");
+                .findByBatchIdAndStatusIn(batchId, NON_PROCESSED_STATUSES);
 
         return flaggedRecords.stream()
                 .map(r -> FlaggedRecordDetail.builder()
