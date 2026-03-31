@@ -44,7 +44,7 @@ public class TaxReportingService {
         String w2Box12Code = getW2Box12Code(planType);
         double totalRothCatchUp = safeDouble(summary.getTotalCatchUpRoth())
                 + safeDouble(summary.getTotalSuperCatchUpRoth());
-        double w2Box12Amount = totalRothCatchUp;
+        double w2Box12Amount = safeDouble(summary.getTotalRegularRoth()) + totalRothCatchUp;
 
         // 1099-R distribution code for Roth catch-up
         String distributionCode1099R = totalRothCatchUp > 0 ? "B" : null;

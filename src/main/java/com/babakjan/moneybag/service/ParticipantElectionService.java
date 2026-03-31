@@ -8,6 +8,7 @@ import com.babakjan.moneybag.error.exception.ElectionValidationException;
 import com.babakjan.moneybag.repository.ParticipantElectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -117,6 +118,7 @@ public class ParticipantElectionService {
                 .build();
     }
 
+    @Transactional
     public ElectionSubmissionResponse submitElection(ElectionSubmissionRequest request)
             throws ElectionValidationException {
         ParticipantProfile profile = PARTICIPANT_PROFILES.getOrDefault(request.getParticipantId(),
@@ -127,6 +129,12 @@ public class ParticipantElectionService {
         boolean isCatchUpEligible = age >= 50;
         boolean isSuperCatchUpEligible = age >= 60 && age <= 63;
         boolean isAffected = isCatchUpEligible && isHighEarner;
+
+        // Validate: participant must be catch-up eligible to make catch-up contributions
+        if (!isCatchUpEligible && request.getCatchUpAmount() != null && request.getCatchUpAmount() > 0) {
+            throw new ElectionValidationException("NOT_CATCHUP_ELIGIBLE",
+                    "Participant is not eligible for catch-up contributions (must be age 50 or older)");
+        }
 
         // Validate: affected participant cannot use PRE_TAX catch-up
         if (isAffected && request.getCatchUpAmount() != null && request.getCatchUpAmount() > 0

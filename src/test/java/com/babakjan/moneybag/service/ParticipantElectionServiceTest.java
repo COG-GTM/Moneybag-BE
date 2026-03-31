@@ -277,6 +277,24 @@ class ParticipantElectionServiceTest {
         assertThat(existing.getStatus()).isEqualTo("SUPERSEDED");
     }
 
+    // ========== Election submission: under-50 participant tries catch-up ==========
+    @Test
+    void submitElection_under50_catchUp_rejected() {
+        // Participant 6: age 45, not catch-up eligible
+        ElectionSubmissionRequest request = ElectionSubmissionRequest.builder()
+                .participantId(6L)
+                .planYear(2026)
+                .regularAmount(15000.0)
+                .regularDesignation("PRE_TAX")
+                .catchUpAmount(5000.0)
+                .catchUpDesignation("ROTH")
+                .build();
+
+        assertThatThrownBy(() -> participantElectionService.submitElection(request))
+                .isInstanceOf(ElectionValidationException.class)
+                .hasMessageContaining("not eligible for catch-up");
+    }
+
     // ========== Non-affected participant gets standard label ==========
     @Test
     void submitElection_nonAffected_preTaxCatchUp_standardLabel() throws ElectionValidationException {

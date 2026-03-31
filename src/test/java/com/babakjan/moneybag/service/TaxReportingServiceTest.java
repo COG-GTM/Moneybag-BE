@@ -152,7 +152,8 @@ class TaxReportingServiceTest {
         TaxReportResponse response = taxReportingService.generateTaxReport(100L, 2026);
 
         assertThat(response.getW2Box12Code()).isEqualTo("EE");
-        assertThat(response.getW2Box12Amount()).isEqualTo(4000.0);
+        // W-2 Box 12 amount includes regular Roth ($3,000) + catch-up Roth ($4,000)
+        assertThat(response.getW2Box12Amount()).isEqualTo(7000.0);
     }
 
     // ========== Year-end summary with no data ==========

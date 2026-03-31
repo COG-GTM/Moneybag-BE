@@ -41,10 +41,7 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/swagger-ui/**",
             "/swagger-ui/**",
-            "/v3/api-docs/**",
-            // SECURE 2.0 Section 603 participant and tax endpoints
-            "/participant/**",
-            "/tax/**"
+            "/v3/api-docs/**"
     };
 
     //paths, which require role ADMIN
