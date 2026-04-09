@@ -74,7 +74,7 @@ complex database queries. So, I am satisfied with the result of my work.
 
 ## ✅ Software requirements
 
-- Java 17
+- Java 21
 - Docker, Docker compose
 
 ## 🎬 How to run
