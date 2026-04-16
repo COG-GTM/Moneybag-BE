@@ -2,7 +2,6 @@ package com.babakjan.moneybag.entity;
 
 import com.babakjan.moneybag.dto.record.CreateRecordRequest;
 import com.babakjan.moneybag.dto.record.RecordDto;
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,11 +28,11 @@ public class Record {
 
     private String note;
 
-    @Nonnull
+    @Column(nullable = false)
     private Date date;
 
-    @ManyToOne
-    @Nonnull
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Account account; //many records belong to one account
 
     @ManyToOne

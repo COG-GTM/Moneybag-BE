@@ -28,8 +28,10 @@ public class Category {
 
     private String icon;
 
+    @Builder.Default
     private String color = "#6290ff";
 
+    @Builder.Default
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Record> records = new ArrayList<>(); // one category belongs to many records
 
