@@ -3,7 +3,6 @@ package com.babakjan.moneybag.entity;
 import com.babakjan.moneybag.dto.account.AccountDto;
 import com.babakjan.moneybag.dto.account.AccountDtoReduced;
 import com.babakjan.moneybag.dto.account.CreateAccountRequest;
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -30,23 +29,27 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Nonnull
+    @Column(nullable = false)
     private String name;
 
-    @Nonnull
+    @Column(nullable = false)
     private String currency;
 
-    @Nonnull
+    @Column(nullable = false)
     private Double balance;
 
-    @Nonnull
+    @Builder.Default
+    @Column(nullable = false)
     private String color = "#6290ff";
 
-    @Nonnull
+    @Builder.Default
+    @Column(nullable = false)
     private String icon = "mdi-cash";
 
+    @Builder.Default
     private Boolean includeInStatistic = true;
 
+    @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Record> records = new ArrayList<>(); //one account belongs to many records
 
