@@ -40,14 +40,18 @@ public class Account {
     private Double balance;
 
     @Nonnull
+    @Builder.Default
     private String color = "#6290ff";
 
     @Nonnull
+    @Builder.Default
     private String icon = "mdi-cash";
 
+    @Builder.Default
     private Boolean includeInStatistic = true;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Record> records = new ArrayList<>(); //one account belongs to many records
 
     @ManyToOne

@@ -3,6 +3,7 @@ package com.babakjan.moneybag.service;
 import com.babakjan.moneybag.dto.category.CategoryAnalyticDto;
 import com.babakjan.moneybag.dto.category.CategoryDto;
 import com.babakjan.moneybag.dto.category.CreateCategoryRequest;
+import com.babakjan.moneybag.entity.Account;
 import com.babakjan.moneybag.entity.Category;
 import com.babakjan.moneybag.entity.CategoryAnalytic;
 import com.babakjan.moneybag.entity.Record;
@@ -200,21 +201,34 @@ class CategoryServiceTest {
     @Test
     void categoriesToDtos() {
         // given
+        Account dummyAccount = Account.builder()
+                .name("Dummy")
+                .balance(0.0)
+                .currency("USD")
+                .build();
         Record apples = Record.builder()
                 .id(1L)
                 .label("apples")
+                .date(new Date())
+                .account(dummyAccount)
                 .build();
         Record yogurts = Record.builder()
                 .id(2L)
                 .label("yogurts")
+                .date(new Date())
+                .account(dummyAccount)
                 .build();
         Record dividends = Record.builder()
                 .id(45L)
                 .label("dividends")
+                .date(new Date())
+                .account(dummyAccount)
                 .build();
         Record salary = Record.builder()
                 .id(908L)
                 .label("salary")
+                .date(new Date())
+                .account(dummyAccount)
                 .build();
         Category food = new Category(
                 9L,

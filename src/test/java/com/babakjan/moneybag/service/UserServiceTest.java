@@ -169,6 +169,8 @@ class UserServiceTest {
         Double expenses = -253.9;
         Double totalBalance = 9000.02;
         Account account = Account.builder()
+                .name("Test")
+                .balance(0.0)
                 .currency(currency)
                 .build();
         given(recordRepository.getTotalIncomes(eq(userId), eq(from), any()))
