@@ -8,8 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -143,5 +145,44 @@ class AccountRepositoryTest {
 
         // then
         assertThat(totalBalance).isEqualTo(0.0);
+    }
+
+    @Test
+    void findCurrenciesOrderByIdReturnsCurrencyOfFirstAccountTest() {
+        // given
+        User user = User.builder()
+                .firstName("Some")
+                .lastName("User")
+                .email("test.user@gmail.com")
+                .password("secret")
+                .role(Role.USER)
+                .accounts(new ArrayList<>())
+                .build();
+        userRepository.save(user);
+
+        for (String currency : List.of("EUR", "USD", "CZK")) {
+            Account account = Account.builder()
+                    .name(currency + " account")
+                    .currency(currency)
+                    .balance(1.0)
+                    .includeInStatistic(true)
+                    .user(user)
+                    .records(new ArrayList<>())
+                    .build();
+            user.addAccount(account);
+            accountRepository.save(account);
+        }
+
+        // when
+        List<String> currencies = accountRepository.findCurrenciesOrderById(PageRequest.of(0, 1));
+
+        // then
+        assertThat(currencies).isEqualTo(List.of(accountRepository.findAll().get(0).getCurrency()));
+        assertThat(currencies).isEqualTo(List.of("EUR"));
+    }
+
+    @Test
+    void findCurrenciesOrderByIdNoAccountsTest() {
+        assertThat(accountRepository.findCurrenciesOrderById(PageRequest.of(0, 1))).isEqualTo(List.of());
     }
 }

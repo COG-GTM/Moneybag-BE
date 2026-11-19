@@ -1,5 +1,6 @@
 package com.babakjan.moneybag.service;
 
+import org.springframework.data.domain.PageRequest;
 import com.babakjan.moneybag.dto.user.UpdateUserRequest;
 import com.babakjan.moneybag.dto.user.UserDto;
 import com.babakjan.moneybag.entity.*;
@@ -175,8 +176,8 @@ class UserServiceTest {
                 .willReturn(income);
         given(recordRepository.getTotalExpenses(eq(userId), eq(from), any()))
                 .willReturn(expenses);
-        given(accountRepository.findAll())
-                .willReturn(List.of(account));
+        given(accountRepository.findCurrenciesOrderById(PageRequest.of(0, 1)))
+                .willReturn(List.of(account.getCurrency()));
         given(accountRepository.getTotalBalance(userId))
                 .willReturn(totalBalance);
 
