@@ -8,6 +8,7 @@ import com.babakjan.moneybag.repository.AccountRepository;
 import com.babakjan.moneybag.repository.RecordRepository;
 import com.babakjan.moneybag.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -122,9 +123,9 @@ public class UserService {
         Double totalCashFlow = totalIncomes + totalExpenses;
         Double totalBalance = getTotalBalance(userId, dateLt);
         String currency = "";
-        List<Account> accounts = accountRepository.findAll();
-        if (accounts.size() > 0) {
-            currency = accounts.get(0).getCurrency();
+        List<String> currencies = accountRepository.findCurrenciesOrderById(PageRequest.of(0, 1));
+        if (currencies.size() > 0) {
+            currency = currencies.get(0);
         }
 
         return new TotalAnalytic(totalIncomes, totalExpenses, totalCashFlow, totalBalance, currency);
